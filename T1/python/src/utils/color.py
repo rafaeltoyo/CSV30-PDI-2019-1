@@ -49,7 +49,7 @@ def img_rgb_to_gs(img: np.ndarray) -> np.ndarray:
     out = np.copy(img)
     out[:, :] *= (0.114, 0.587, 0.299)
     out = out.sum(axis=(2,))
-    # out = np.array([img[x][y][2] * 0.299 + img[x][y][1] * 0.587 + img[x][y][0] * 0.114) for x in range(w) for y in range(h)]).reshape((w, h))
+    # out = np.array([img[x][y][2] * 0.299 + img[x][y][1] * 0.587 + img[x][y][0] * 0.114 for x in range(w) for y in range(h)]).reshape((w, h))
     return out
 
 
