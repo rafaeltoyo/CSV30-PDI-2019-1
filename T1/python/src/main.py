@@ -3,73 +3,78 @@
 
 import numpy as np
 import cv2
-import time
+from utils.mytimer import Timer
 
-# Constantes
+# ==================================================================================================================== #
+#   Constantes
+# -------------------------------------------------------------------------------------------------------------------- #
 INPUT_IMG = 1
 THRESHOLD_VALUE = 0.75
 COMP_MIN_WIDTH = 4
 COMP_MIN_HEIGHT = 4
 COMP_MIN_PIXEL = 9
 
-# Timers
-class Timer:
-    def __init__(self, txt="Timer"):
-        self.__txt = txt
-        self.__start = 0
-        self.__end = 0
-    def start(self):
-        self.__start = self.__end = time.time()
-    def stop(self):
-        self.__end = time.time()
-    def result(self):
-        print(self.__txt + ": {0}s".format(self.__end - self.__start))
-
-
+# ==================================================================================================================== #
+#   Timers
+# -------------------------------------------------------------------------------------------------------------------- #
 timer_general = Timer(txt="Total")
 timer_threshold = Timer(txt="Binarização")
 timer_labeling = Timer(txt="Rotulação")
 
+# ==================================================================================================================== #
+#   Abrir a imagem
+# -------------------------------------------------------------------------------------------------------------------- #
 timer_general.start()
-# Abrir a imagem
 img = cv2.imread(['arroz.bmp', 'documento-3mp.bmp'][INPUT_IMG])
 
-# Normalizar a imagem
+# ==================================================================================================================== #
+#   Normalizar a imagem
+# -------------------------------------------------------------------------------------------------------------------- #
 nimg = cv2.normalize(img, None, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
 
-# Função de binarização
+# ==================================================================================================================== #
+#   Função de binarização
+# -------------------------------------------------------------------------------------------------------------------- #
 from utils.color import threshold
 timer_threshold.start()
 nimg = threshold(nimg, THRESHOLD_VALUE)
 timer_threshold.stop()
 
-# Gerar imagem binarizada
+# ==================================================================================================================== #
+#   Gerar imagem binarizada
+# -------------------------------------------------------------------------------------------------------------------- #
 cv2.imwrite('binarizado.bmp', cv2.normalize(nimg, None, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX))
 
 # Inversão na imagem do documento
 if INPUT_IMG == 1:
     nimg = np.where(nimg == 1, 0, 1)
 
-# Função de rotular componentes
+# ==================================================================================================================== #
+#   Função de rotular componentes
+# -------------------------------------------------------------------------------------------------------------------- #
 from utils.image import labeling_recursive as labeling
 timer_labeling.start()
-cmps = labeling(nimg,
-                min_width=COMP_MIN_WIDTH,
-                min_height=COMP_MIN_HEIGHT,
-                min_pixel=COMP_MIN_PIXEL)
+cmps = labeling(nimg, min_width=COMP_MIN_WIDTH, min_height=COMP_MIN_HEIGHT, min_pixel=COMP_MIN_PIXEL)
 timer_labeling.stop()
 
 # Desenhar os retângulos das componentes encontradas na imagem original
 for cmp in cmps:
     cv2.rectangle(img, (cmp.yi, cmp.xi), (cmp.yf, cmp.xf), (0, 0, 255), 1)
 
-# Gerar imagem das componentes encontradas
+# ==================================================================================================================== #
+#   Gerar imagem das componentes encontradas
+# -------------------------------------------------------------------------------------------------------------------- #
 cv2.imwrite('output.bmp', img)
-
 timer_general.stop()
 
-# Apresentar o número de componentes encontradas
-print("componentes: " + str(len(cmps)))
+# ==================================================================================================================== #
+#   Apresentar o número de componentes encontradas
+# -------------------------------------------------------------------------------------------------------------------- #
+print("Componentes encontradas: " + str(len(cmps)))
+print("")
+print("Tempos de execução")
 timer_general.result()
 timer_threshold.result()
 timer_labeling.result()
+
+# ==================================================================================================================== #
