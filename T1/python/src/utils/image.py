@@ -2,6 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
+import enum
+
+
+class Neighborhood(enum.Enum):
+    NB_4 = 4
+    NB_8 = 8
 
 
 class Component:
@@ -56,7 +62,20 @@ class Component:
         return self.xf - self.xi
 
 
-def labeling_recursive(img: np.ndarray, min_width: int, min_height: int, min_pixel: int):
+def labeling_recursive(img: np.ndarray,
+                       neig: Neighborhood = Neighborhood.NB_4,
+                       min_width: int = 1,
+                       min_height: int = 1,
+                       min_pixel: int = 1):
+    """
+    Rotularização com algoritmo recursivo
+    :param img: Imagem
+    :param neig: Número de vizinhos a ser considerados (4 ou 8)
+    :param min_width: Largura mínima de uma componente
+    :param min_height: Altura mínima de uma componente
+    :param min_pixel: Número mínimo que uma componente deverá conter
+    :return: Lista com as componentes encontradas
+    """
     w, h = img.shape
 
     UNEXPLORED_LABEL = -1
@@ -68,25 +87,42 @@ def labeling_recursive(img: np.ndarray, min_width: int, min_height: int, min_pix
     components = []
 
     def floodfill(cmp: Component, xi: int, yi: int):
-        wrk[x][y] = cmp.label
+        wrk[xi][yi] = cmp.label
         cmp.increment(xi, yi)
 
         # Explorar vizinhos
-        if xi > 0 and wrk[xi - 1][yi] == UNEXPLORED_LABEL:
-            wrk[xi - 1][yi] = cmp.label
-            floodfill(cmp, xi-1, yi)
-        if xi < w - 1 and wrk[xi + 1][yi] == UNEXPLORED_LABEL:
-            wrk[xi + 1][yi] = cmp.label
-            floodfill(cmp, xi+1, yi)
-        if yi > 0 and wrk[xi][yi - 1] == UNEXPLORED_LABEL:
-            wrk[xi][yi - 1] = cmp.label
-            floodfill(cmp, xi, yi-1)
-        if yi < h - 1 and wrk[xi][yi + 1] == UNEXPLORED_LABEL:
-            wrk[xi][yi + 1] = cmp.label
-            floodfill(cmp, xi, yi+1)
 
-    for x in range(w):
-        for y in range(h):
+        if neig == Neighborhood.NB_4:
+            if xi > 0 and wrk[xi - 1][yi] == UNEXPLORED_LABEL:
+                floodfill(cmp, xi-1, yi)
+            if xi < w - 1 and wrk[xi + 1][yi] == UNEXPLORED_LABEL:
+                floodfill(cmp, xi+1, yi)
+            if yi > 0 and wrk[xi][yi - 1] == UNEXPLORED_LABEL:
+                floodfill(cmp, xi, yi-1)
+            if yi < h - 1 and wrk[xi][yi + 1] == UNEXPLORED_LABEL:
+                floodfill(cmp, xi, yi+1)
+        elif neig == Neighborhood.NB_8:
+            if xi > 0 and yi > 0 and wrk[xi - 1][yi - 1] == UNEXPLORED_LABEL:
+                floodfill(cmp, xi - 1, yi - 1)
+            if yi > 0 and wrk[xi][yi - 1] == UNEXPLORED_LABEL:
+                floodfill(cmp, xi, yi - 1)
+            if xi < w - 1 and yi > 0 and wrk[xi + 1][yi - 1] == UNEXPLORED_LABEL:
+                floodfill(cmp, xi + 1, yi - 1)
+
+            if xi > 0 and wrk[xi - 1][yi] == UNEXPLORED_LABEL:
+                floodfill(cmp, xi - 1, yi)
+            if xi < w - 1 and wrk[xi + 1][yi] == UNEXPLORED_LABEL:
+                floodfill(cmp, xi + 1, yi)
+
+            if xi > 0 and yi < h - 1 and wrk[xi - 1][yi + 1] == UNEXPLORED_LABEL:
+                floodfill(cmp, xi - 1, yi + 1)
+            if yi < h - 1 and wrk[xi][yi + 1] == UNEXPLORED_LABEL:
+                floodfill(cmp, xi, yi + 1)
+            if xi < w - 1 and yi < h - 1 and wrk[xi + 1][yi + 1] == UNEXPLORED_LABEL:
+                floodfill(cmp, xi + 1, yi + 1)
+
+    for y in range(h):
+        for x in range(w):
 
             # Possivel inicio de componente encontrado
             if wrk[x][y] == UNEXPLORED_LABEL:
@@ -102,7 +138,7 @@ def labeling_recursive(img: np.ndarray, min_width: int, min_height: int, min_pix
     return components
 
 
-def labeling_stack(img: np.ndarray, min_width: int, min_height: int, min_pixel: int):
+def labeling_stack(img: np.ndarray, neig: int = 4, min_width: int = 1, min_height: int = 1, min_pixel: int = 1):
     w, h = img.shape
 
     UNEXPLORED_LABEL = -1

@@ -53,8 +53,13 @@ if INPUT_IMG == 1:
 #   Função de rotular componentes
 # -------------------------------------------------------------------------------------------------------------------- #
 from utils.image import labeling_recursive as labeling
+from utils.image import Neighborhood
 timer_labeling.start()
-cmps = labeling(nimg, min_width=COMP_MIN_WIDTH, min_height=COMP_MIN_HEIGHT, min_pixel=COMP_MIN_PIXEL)
+cmps = labeling(nimg,
+                neig=Neighborhood.NB_8,
+                min_width=COMP_MIN_WIDTH,
+                min_height=COMP_MIN_HEIGHT,
+                min_pixel=COMP_MIN_PIXEL)
 timer_labeling.stop()
 
 # Desenhar os retângulos das componentes encontradas na imagem original
