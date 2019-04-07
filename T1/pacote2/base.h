@@ -1,10 +1,10 @@
 /*============================================================================*/
-/* TIPOS E FUN«’ES B¡SICOS                                                    */
+/* TIPOS E FUN√á√ïES B√ÅSICOS                                                    */
 /*----------------------------------------------------------------------------*/
 /* Autor: Bogdan T. Nassu - nassu@dainf.ct.utfpr.edu.br                       */
 /*============================================================================*/
-/** Tipos e funÁıes b·sicos, ˙teis para diversos problemas envolvendo
- * manipulaÁ„o de imagens. */
+/** Tipos e fun√ß√µes b√°sicos, √∫teis para diversos problemas envolvendo
+ * manipula√ß√£o de imagens. */
 /*============================================================================*/
 
 #ifndef __BASE_H

@@ -15,9 +15,9 @@ def projeto2():
     #   Constantes
     # ---------------------------------------------------------------------------------------------------------------- #
 
-    INPUT_IMG = 2
-    WINDOW_WIDTH = 11
-    WINDOW_HEIGHT = 11
+    INPUT_IMG = 5
+    WINDOW_WIDTH = 31
+    WINDOW_HEIGHT = 31
     COMP_MIN_WIDTH = 4
     COMP_MIN_HEIGHT = 4
     COMP_MIN_PIXEL = 9
@@ -33,7 +33,12 @@ def projeto2():
     #   Imagens
     # ---------------------------------------------------------------------------------------------------------------- #
 
-    images_name = ['arroz.bmp', 'documento-3mp.bmp', 'zumbi.bmp', 'a01 - Original.bmp', 'b01 - Original.bmp']
+    images_name = ['arroz.bmp',
+                   'documento-3mp.bmp',
+                   'zumbi.bmp',
+                   'a01 - Original.bmp',
+                   'b01 - Original.bmp',
+                   'chessboard.bmp']
     prj_path = PathBuilder()
 
     # ================================================================================================================ #
@@ -58,7 +63,7 @@ def projeto2():
     # Parar o timer do blur
     timer_blur.stop()
     # Gerar imagem borrada para visualização
-    cv2.imwrite(prj_path.outputdir('T2-blur3.bmp'), np.uint8(nimg * 255))
+    cv2.imwrite(prj_path.outputdir('testeakira.bmp'), np.uint8(nimg * 255))
 
     # ================================================================================================================ #
     #   Binalizar a imagem

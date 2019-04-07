@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Exemplo: segmentação de uma imagem em escala de cinza.                     */
+/* Exemplo: segmentaï¿½ï¿½o de uma imagem em escala de cinza.                     */
 /*----------------------------------------------------------------------------*/
 /* Autor: Bogdan T. Nassu                                                     */
-/* Universidade Tecnológica Federal do Paraná                                 */
+/* Universidade Tecnolï¿½gica Federal do Paranï¿½                                 */
 /*============================================================================*/
 
 #include <stdio.h>
@@ -14,7 +14,7 @@
 
 #define INPUT_IMAGE "arroz.bmp"
 
-// TODO: ajuste estes parâmetros!
+// TODO: ajuste estes parÃ¢metros!
 #define NEGATIVO 0
 #define THRESHOLD 0.4f
 #define ALTURA_MIN 1
@@ -42,7 +42,7 @@ int main ()
 {
     int i;
 
-    // Abre a imagem em escala de cinza, e mantém uma cópia colorida dela para desenhar a saída.
+    // Abre a imagem em escala de cinza, e mantÃªm uma cÃ³pia colorida dela para desenhar a saÃ­da.
     Imagem* img = abreImagem (INPUT_IMAGE, 1);
     if (!img)
     {
@@ -81,15 +81,15 @@ int main ()
 }
 
 /*----------------------------------------------------------------------------*/
-/** Binarização simples por limiarização.
+/** BinarizaÃ§Ã£o simples por limiarizaÃ§Ã£o.
  *
- * Parâmetros: Imagem* in: imagem de entrada. Se tiver mais que 1 canal,
+ * ParÃ¢metros: Imagem* in: imagem de entrada. Se tiver mais que 1 canal,
  *               binariza cada canal independentemente.
- *             Imagem* out: imagem de saída. Deve ter o mesmo tamanho da
+ *             Imagem* out: imagem de saï¿½da. Deve ter o mesmo tamanho da
  *               imagem de entrada.
  *             float threshold: limiar.
  *
- * Valor de retorno: nenhum (usa a imagem de saída). */
+ * Valor de retorno: nenhum (usa a imagem de saï¿½da). */
 
 void binariza (Imagem* in, Imagem* out, float threshold)
 {
@@ -99,7 +99,7 @@ void binariza (Imagem* in, Imagem* out, float threshold)
         exit (1);
     }
 
-    // TODO: escreva o código desta função.
+    // TODO: escreva o cï¿½digo desta funï¿½ï¿½o.
 }
 
 /*============================================================================*/
@@ -108,24 +108,24 @@ void binariza (Imagem* in, Imagem* out, float threshold)
 /** Rotulagem usando flood fill. Marca os objetos da imagem com os valores
  * [0.1,0.2,etc].
  *
- * Parâmetros: Imagem* img: imagem de entrada E saída.
- *             Componente** componentes: um ponteiro para um vetor de saída.
- *               Supomos que o ponteiro inicialmente é inválido. Ele irá
- *               apontar para um vetor que será alocado dentro desta função.
+ * Parï¿½metros: Imagem* img: imagem de entrada E saï¿½da.
+ *             Componente** componentes: um ponteiro para um vetor de saï¿½da.
+ *               Supomos que o ponteiro inicialmente ï¿½ invï¿½lido. Ele irï¿½
+ *               apontar para um vetor que serï¿½ alocado dentro desta funï¿½ï¿½o.
  *               Lembre-se de desalocar o vetor criado!
  *             int largura_min: descarta componentes com largura menor que esta.
  *             int altura_min: descarta componentes com altura menor que esta.
  *             int n_pixels_min: descarta componentes com menos pixels que isso.
  *
- * Valor de retorno: o número de componentes conexos encontrados. */
+ * Valor de retorno: o nï¿½mero de componentes conexos encontrados. */
 
 int rotula (Imagem* img, Componente** componentes, int largura_min, int altura_min, int n_pixels_min)
 {
-    // TODO: escreva esta função.
+    // TODO: escreva esta funï¿½ï¿½o.
 	// Use a abordagem com flood fill recursivo.
-	// Observe que o parâmetro 'componentes' é um ponteiro para um vetor, então a alocação dele deve ser algo como:
+	// Observe que o parï¿½metro 'componentes' ï¿½ um ponteiro para um vetor, entï¿½o a alocaï¿½ï¿½o dele deve ser algo como:
 	// *componentes = malloc (sizeof (Componente) * n);
-	// Dependendo de como você fizer a sua implementação, pode ser também interessante alocar primeiro um vetor maior do que o necessário, ajustando depois o tamanho usando a função realloc.
+	// Dependendo de como vocï¿½ fizer a sua implementaï¿½ï¿½o, pode ser tambï¿½m interessante alocar primeiro um vetor maior do que o necessï¿½rio, ajustando depois o tamanho usando a funï¿½ï¿½o realloc.
     return (0);
 }
 

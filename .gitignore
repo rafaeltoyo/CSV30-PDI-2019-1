@@ -286,4 +286,6 @@ dmypy.json
 # Ignore all local history of files
 .history
 
-# End of https://www.gitignore.io/api/c,c++,python,pycharm,visualstudiocode
+# End of https://www.gitignore.io/api/c,c++,python,pycharm,visualstudiocode\
+.idea/*
+**/.idea/*

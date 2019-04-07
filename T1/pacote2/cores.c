@@ -1,9 +1,9 @@
 /*============================================================================*/
-/* MANIPULA«√O DE CORES                                                       */
+/* MANIPULA√á√ÉO DE CORES                                                       */
 /*----------------------------------------------------------------------------*/
 /* Autor: Bogdan T. Nassu - nassu@dainf.ct.utfpr.edu.br                       */
 /*============================================================================*/
-/** Tipos e funÁıes para manipulaÁ„o de cores. */
+/** Tipos e fun√ß√µes para manipula√ß√£o de cores. */
 /*============================================================================*/
 
 #include <stdio.h>
@@ -13,9 +13,9 @@
 /*============================================================================*/
 /* TIPO Cor                                                                   */
 /*============================================================================*/
-/** Apenas uma funÁ„o ˙til para "criar" uma inst‚ncia do tipo Cor.
+/** Apenas uma fun√ß√£o √∫til para "criar" uma inst√¢ncia do tipo Cor.
  *
- * Par‚metros: float r: valor do canal R.
+ * Par√¢metros: float r: valor do canal R.
  *             float g: valor do canal G.
  *             float b: valor do canal B.
  *
@@ -31,12 +31,12 @@ Cor criaCor (float r, float g, float b)
 }
 
 /*============================================================================*/
-/* CONVERS’ES DE CORES                                                        */
+/* CONVERS√ïES DE CORES                                                        */
 /*============================================================================*/
 /** Converte uma imagem de RGB para escala de cinza.
  *
- * Par‚metros: Imagem* in: imagem de entrada de 3 canais.
- *             Imagem* out: imagem de saÌda de 1 canal, com o mesmo tamanho.
+ * Par√¢metros: Imagem* in: imagem de entrada de 3 canais.
+ *             Imagem* out: imagem de sa√≠da de 1 canal, com o mesmo tamanho.
  *
  * Valor de retorno: nenhum. */
 
@@ -60,9 +60,9 @@ void RGBParaCinza (Imagem* in, Imagem* out)
         exit (1);
     }
 
-    /* Percorre a imagem e converte. Usamos aqui os mesmos fatores de convers„o
-       do OpenCV, o que mantÈm certas propriedades de percepÁ„o (i.e. n„o s„o
-	   par‚metros "m·gicos"). */
+    /* Percorre a imagem e converte. Usamos aqui os mesmos fatores de convers√£o
+       do OpenCV, o que mant√™m certas propriedades de percep√¢√¢o (i.e. n√£o s√£o
+	   par√¢metros "m√¢gicos"). */
     int i, j;
 	for (i = 0; i < in->altura; i++)
         for (j = 0; j < in->largura; j++)
@@ -72,8 +72,8 @@ void RGBParaCinza (Imagem* in, Imagem* out)
 /*----------------------------------------------------------------------------*/
 /** Converte uma imagem de escala de cinza para RGB.
  *
- * Par‚metros: Imagem* in: imagem de entrada de 1 canal.
- *             Imagem* out: imagem de saÌda de 3 canais, com o mesmo tamanho.
+ * Par√¢metros: Imagem* in: imagem de entrada de 1 canal.
+ *             Imagem* out: imagem de sa√¢da de 3 canais, com o mesmo tamanho.
  *
  * Valor de retorno: nenhum. */
 
@@ -106,13 +106,13 @@ void cinzaParaRGB (Imagem* in, Imagem* out)
 }
 
 /*============================================================================*/
-/* TRANSFORMA«’ES DE CORES                                                    */
+/* TRANSFORMA√á√ïES DE CORES                                                    */
 /*============================================================================*/
 /** Inverte as cores de uma imagem, usando o complemento. Supomos pixels com
  * valores no intervalo [0,1].
  *
- * Par‚metros: Imagem* in: imagem de entrada.
- *             Imagem* out: imagem de saÌda, com o mesmo tamanho e n˙mero de
+ * Par√¢metros: Imagem* in: imagem de entrada.
+ *             Imagem* out: imagem de sa√≠da, com o mesmo tamanho e n√∫mero de
  *               canais.
  *
  * Valor de retorno: nenhum. */
