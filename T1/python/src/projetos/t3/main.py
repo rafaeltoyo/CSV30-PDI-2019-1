@@ -6,7 +6,7 @@ import cv2
 
 from utils.mytimer import Timer
 from utils.pathbuilder import PathBuilder
-from projetos.t3.bloom import bloom1
+from projetos.t3.bloom import bloom1, bloom2, create_mask
 
 
 def projeto3():
@@ -15,7 +15,7 @@ def projeto3():
     # ---------------------------------------------------------------------------------------------------------------- #
 
     INPUT_IMG = 6
-    THRESHOLD = 0.85
+    THRESHOLD = 0.5
 
     # ================================================================================================================ #
     #   Timers
@@ -53,12 +53,30 @@ def projeto3():
     # Iniciar o timer para avaliar a performace do blur
     timer_bloom1.start()
     # Função de blur
-    nimg = bloom1(nimg, THRESHOLD)
+    nimg = bloom1(nimg, THRESHOLD,
+                  sigmas=[2, 3, 5, 10, 20],
+                  mask_weight=0.35,
+                  img_weight=0.55)
     # Parar o timer do blur
     timer_bloom1.stop()
     # Gerar imagem borrada para visualização
     cv2.imwrite(prj_path.outputdir('bloom1.bmp'), np.uint8(nimg * 255))
-    print(prj_path.outputdir('bloom1.bmp'))
+
+    # ================================================================================================================ #
+    #   Função de bloom 2 (Box Blur)
+    # ---------------------------------------------------------------------------------------------------------------- #
+
+    # Iniciar o timer para avaliar a performace do blur
+    timer_bloom2.start()
+    # Função de blur
+    nimg = bloom2(nimg, THRESHOLD,
+                  window=[10, 15, 20, 30],
+                  mask_weight=0.35,
+                  img_weight=0.55)
+    # Parar o timer do blur
+    timer_bloom2.stop()
+    # Gerar imagem borrada para visualização
+    cv2.imwrite(prj_path.outputdir('bloom2.bmp'), np.uint8(nimg * 255))
 
     # ================================================================================================================ #
     #   Apresentar o número de componentes encontradas
@@ -66,6 +84,7 @@ def projeto3():
 
     print("Tempos de execução")
     timer_bloom1.result()
+    timer_bloom2.result()
 
     # ================================================================================================================ #
 
