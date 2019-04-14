@@ -2,9 +2,6 @@
 # Created by https://www.gitignore.io/api/c,c++,python,pycharm,visualstudiocode
 # Edit at https://www.gitignore.io/?templates=c,c++,python,pycharm,visualstudiocode
 
-**/.idea/*
-**/imgs/input/*
-**/imgs/output/*
 
 ### C ###
 # Prerequisites
@@ -293,3 +290,5 @@ dmypy.json
 # End of https://www.gitignore.io/api/c,c++,python,pycharm,visualstudiocode\
 .idea/*
 **/.idea/*
+material/*
+imgs/output/*
