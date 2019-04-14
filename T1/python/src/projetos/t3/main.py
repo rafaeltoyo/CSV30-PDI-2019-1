@@ -6,7 +6,7 @@ import cv2
 
 from utils.mytimer import Timer
 from utils.pathbuilder import PathBuilder
-from projetos.t3.bloom import bloom1, bloom2, create_mask
+from projetos.t3.bloom import bloom1, bloom2
 
 
 def projeto3():
@@ -47,20 +47,27 @@ def projeto3():
     nimg = np.float32(img) / 255
 
     # ================================================================================================================ #
+    #   Definir os sigmas
+    # ---------------------------------------------------------------------------------------------------------------- #
+
+    sigmas = [2, 4, 8, 12, 20]
+    window = [int(((sgm ** 2) * 12 + 1) ** 0.5) for sgm in sigmas]
+
+    # ================================================================================================================ #
     #   Função de bloom 1 (Gaussiano)
     # ---------------------------------------------------------------------------------------------------------------- #
 
     # Iniciar o timer para avaliar a performace do blur
     timer_bloom1.start()
     # Função de blur
-    nimg = bloom1(nimg, THRESHOLD,
-                  sigmas=[2, 3, 5, 10, 20],
-                  mask_weight=0.35,
-                  img_weight=0.55)
+    nimg1 = bloom1(nimg, THRESHOLD,
+                   sigmas=sigmas,
+                   mask_weight=0.35,
+                   img_weight=0.55)
     # Parar o timer do blur
     timer_bloom1.stop()
     # Gerar imagem borrada para visualização
-    cv2.imwrite(prj_path.outputdir('bloom1.bmp'), np.uint8(nimg * 255))
+    cv2.imwrite(prj_path.outputdir('bloom1.bmp'), np.uint8(nimg1 * 255))
 
     # ================================================================================================================ #
     #   Função de bloom 2 (Box Blur)
@@ -69,14 +76,14 @@ def projeto3():
     # Iniciar o timer para avaliar a performace do blur
     timer_bloom2.start()
     # Função de blur
-    nimg = bloom2(nimg, THRESHOLD,
-                  window=[10, 15, 20, 30],
-                  mask_weight=0.35,
-                  img_weight=0.55)
+    nimg2 = bloom2(nimg, THRESHOLD,
+                   window=window,
+                   mask_weight=0.35,
+                   img_weight=0.55)
     # Parar o timer do blur
     timer_bloom2.stop()
     # Gerar imagem borrada para visualização
-    cv2.imwrite(prj_path.outputdir('bloom2.bmp'), np.uint8(nimg * 255))
+    cv2.imwrite(prj_path.outputdir('bloom2.bmp'), np.uint8(nimg2 * 255))
 
     # ================================================================================================================ #
     #   Apresentar o número de componentes encontradas
@@ -87,4 +94,3 @@ def projeto3():
     timer_bloom2.result()
 
     # ================================================================================================================ #
-

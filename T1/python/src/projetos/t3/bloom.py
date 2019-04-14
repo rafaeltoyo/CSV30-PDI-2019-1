@@ -6,6 +6,12 @@ import cv2
 
 
 def create_mask(img: np.ndarray, threshold: float) -> np.ndarray:
+    """
+    Criar mascara para o bloom
+    :param img:
+    :param threshold:
+    :return:
+    """
 
     w, h, c = img.shape
     if c == 3:
@@ -19,9 +25,22 @@ def create_mask(img: np.ndarray, threshold: float) -> np.ndarray:
 
 def bloom1(img: np.ndarray,
            threshold: float,
-           sigmas=[5, 10, 15, 20],
+           sigmas=None,
            mask_weight: float = 0.5,
-           img_weight: float = 0.8):
+           img_weight: float = 0.8) -> np.ndarray:
+    """
+    Bloom com gaussian blur
+    :param img:
+    :param threshold:
+    :param sigmas:
+    :param mask_weight:
+    :param img_weight:
+    :return:
+    """
+
+    if sigmas is None:
+        return img
+
     mask = create_mask(img, threshold)
     buffer = np.zeros(img.shape)
 
@@ -36,9 +55,22 @@ def bloom1(img: np.ndarray,
 
 def bloom2(img: np.ndarray,
            threshold: float,
-           window=[10, 15, 20, 25],
+           window=None,
            mask_weight: float = 0.5,
-           img_weight: float = 0.8):
+           img_weight: float = 0.8) -> np.ndarray:
+    """
+    Bloom com box blur
+    :param img:
+    :param threshold:
+    :param window:
+    :param mask_weight:
+    :param img_weight:
+    :return:
+    """
+
+    if window is None:
+        return img
+
     mask = create_mask(img, threshold)
     buffer = np.zeros(img.shape)
 
