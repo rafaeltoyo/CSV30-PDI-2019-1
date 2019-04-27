@@ -48,6 +48,8 @@ def bloom1(img: np.ndarray,
         shape = (3 * sigma) | 1
         buffer += cv2.GaussianBlur(mask, (shape, shape), sigma)
 
+    cv2.imwrite("bufferGaus.png", buffer * 255)
+
     bloom = (img * img_weight + buffer * mask_weight)
     bloom = np.where(bloom > 1, 1, bloom)
     return bloom
@@ -82,6 +84,7 @@ def bloom2(img: np.ndarray,
             w = int(w | 1)
             blur_layer = cv2.blur(blur_layer, (w, w))
         buffer += blur_layer
+    cv2.imwrite("bufferBox.png", buffer * 255)
 
     bloom = (img * img_weight + buffer * mask_weight)
     bloom = np.where(bloom > 1, 1, bloom)

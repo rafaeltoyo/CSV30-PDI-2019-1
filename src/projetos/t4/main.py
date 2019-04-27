@@ -49,7 +49,7 @@ def projeto4():
         cv.addWeighted(sharpness, -1.3, simg, 0.7, 3, simg)
         simg = cv.normalize(simg, None, alpha=0, beta=255, norm_type=cv.NORM_MINMAX)
 
-        # cv.imwrite(PREFIX + 'tratada.bmp', simg)
+        cv.imwrite(PREFIX + 'tratada.bmp', simg)
 
         # ============================================================================================================ #
         # Binarizar
@@ -87,18 +87,43 @@ def projeto4():
         # Tirar as bordas da imagem binarizada
         # ------------------------------------------------------------------------------------------------------------ #
 
-        # bimg = np.where(edges > 0, bimg, 0)
+        # bimg = np.where(edges > 0, 0, bimg)
         # bimg = cv.morphologyEx(bimg, cv.MORPH_OPEN, np.ones((5, 5), np.uint8), iterations=1)
         # bimg = cv.morphologyEx(bimg, cv.MORPH_CLOSE, np.ones((3, 3), np.uint8), iterations=1)
         # bimg = cv.morphologyEx(bimg, cv.MORPH_ERODE, cv.getStructuringElement(cv.MORPH_CROSS, (3, 3)), iterations=3)
-        cv.imwrite(PREFIX + 'final.bmp', bimg)
+        cv.imwrite(PREFIX + 'final.bmp', gsimg)
+
+        edges = cv.Canny(bimg, 0, 255)
+        circles = cv.HoughCircles(edges, cv.HOUGH_GRADIENT, 1.2, 5,
+                                  param1=100, param2=30,
+                                  minRadius=10, maxRadius=30)
+        print(circles)
+        if circles is not None:
+            circles = circles.tolist()
+            for cir in circles:
+                for x, y, r in cir:
+                    x, y, r = int(x), int(y), int(r)
+                    cv.circle(img, (x, y), r, (0, 255, 0), 4)
+
+            # show the output image
+            cv.imwrite("output.bmp", cv.resize(img, (500, 500)))
 
         # ============================================================================================================ #
         # Contar os arroz
         # ------------------------------------------------------------------------------------------------------------ #
 
         ret, labels = cv.connectedComponents(bimg)
+        tam_arroz = (np.sum(np.where(bimg > 0, 1, 0)) / ret) * 0.9
+
+        num_gohan_sepa = 0
+        for i in range(1, ret + 1):
+            label_size = np.sum(np.where(labels == i, 1, 0))
+            num_gohan_sepa += int(label_size / tam_arroz)
+            if (label_size % tam_arroz) / tam_arroz > 0.5:
+                num_gohan_sepa += 1
+
         print("Arroz encontrados: " + str(ret))
+        print("Arroz estimados: " + str(num_gohan_sepa))
         print("Arroz esperados: " + str(num_gohan))
 
     # ================================================================================================================ #
