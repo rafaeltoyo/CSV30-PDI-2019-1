@@ -65,65 +65,54 @@ def projeto4():
         # cv.imwrite(PREFIX + 'limpada.bmp', bimg)
 
         # ============================================================================================================ #
-        # Detectar bordas
-        # ------------------------------------------------------------------------------------------------------------ #
-
-        # edges = cv.cvtColor(simg, cv.COLOR_BGR2GRAY)
-        # edges = cv.adaptiveThreshold(edges, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY_INV, 5, -1)
-        # cv.imwrite(PREFIX + 'edges.bmp', edges)
-
-        # threshold_edges = 0
-        # edges = np.where(bimg > 0, gsimg, threshold_edges)
-        # edges = np.where(edges > threshold_edges, edges, threshold_edges)
-        # cv.resize(edges, (h * 5, w * 5), edges)
-        # edges = cv.normalize(edges, None, alpha=0, beta=255, norm_type=cv.NORM_MINMAX)
-        # cv.imwrite(PREFIX + 'teste.bmp', edges)
-
-        # edges = cv.Canny(simg, 0, 255)
-        # edges = cv.Laplacian(gsimg, cv.CV_64F)
-        # cv.imwrite(PREFIX + 'edges.bmp', edges)
-
-        # ============================================================================================================ #
-        # Tirar as bordas da imagem binarizada
-        # ------------------------------------------------------------------------------------------------------------ #
-
-        # bimg = np.where(edges > 0, 0, bimg)
-        # bimg = cv.morphologyEx(bimg, cv.MORPH_OPEN, np.ones((5, 5), np.uint8), iterations=1)
-        # bimg = cv.morphologyEx(bimg, cv.MORPH_CLOSE, np.ones((3, 3), np.uint8), iterations=1)
-        # bimg = cv.morphologyEx(bimg, cv.MORPH_ERODE, cv.getStructuringElement(cv.MORPH_CROSS, (3, 3)), iterations=3)
-        cv.imwrite(PREFIX + 'final.bmp', gsimg)
-
-        edges = cv.Canny(bimg, 0, 255)
-        circles = cv.HoughCircles(edges, cv.HOUGH_GRADIENT, 1.2, 5,
-                                  param1=100, param2=30,
-                                  minRadius=10, maxRadius=30)
-        print(circles)
-        if circles is not None:
-            circles = circles.tolist()
-            for cir in circles:
-                for x, y, r in cir:
-                    x, y, r = int(x), int(y), int(r)
-                    cv.circle(img, (x, y), r, (0, 255, 0), 4)
-
-            # show the output image
-            cv.imwrite("output.bmp", cv.resize(img, (500, 500)))
-
-        # ============================================================================================================ #
         # Contar os arroz
         # ------------------------------------------------------------------------------------------------------------ #
 
         ret, labels = cv.connectedComponents(bimg)
-        tam_arroz = (np.sum(np.where(bimg > 0, 1, 0)) / ret) * 0.9
+        ngohan_enct = np.max(labels)
 
-        num_gohan_sepa = 0
-        for i in range(1, ret + 1):
+        comp_size = np.zeros(ngohan_enct)
+
+        for i in range(1, ngohan_enct):
+            comp_size[i] = (int((labels == i).sum() / 10)) * 10
+
+        bins = np.unique(comp_size)
+        hstack_labelsize = np.hstack(comp_size)
+        n, bins, patches = plt.hist(hstack_labelsize, bins=bins)
+
+        tam_arroz = np.unique(comp_size)[n.argmax()]
+
+        aux_x = bins[n.argmax()]
+        plt.plot([aux_x, aux_x], [0, n.max()])
+        plt.show()
+
+        # Mostrar resultado
+        a = np.hstack(labels)
+        plt.hist(a, bins=range(1, ngohan_enct))
+        plt.plot([0, ngohan_enct], [tam_arroz, tam_arroz])
+        plt.show()
+
+        # Verificar cada componente e seu tamanho
+        ngohan_sepa = 0
+        for i in range(1, ngohan_enct):
+
+            # Tamanho da componente
             label_size = np.sum(np.where(labels == i, 1, 0))
-            num_gohan_sepa += int(label_size / tam_arroz)
-            if (label_size % tam_arroz) / tam_arroz > 0.5:
-                num_gohan_sepa += 1
 
-        print("Arroz encontrados: " + str(ret))
-        print("Arroz estimados: " + str(num_gohan_sepa))
+            # Quantos arroz entrariam nessa componente
+            contar = int(label_size / tam_arroz)
+            if contar > 0:
+                ngohan_sepa += contar
+            else:
+                ngohan_sepa += 1
+                continue
+
+            # Faltou pouco para mais um arroz?
+            if (label_size % tam_arroz) / tam_arroz > 0.6:
+                ngohan_sepa += 1
+
+        print("Arroz encontrados: " + str(ngohan_enct))
+        print("Arroz estimados: " + str(ngohan_sepa))
         print("Arroz esperados: " + str(num_gohan))
 
     # ================================================================================================================ #
