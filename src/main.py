@@ -5,5 +5,6 @@ from projetos.t1.main import projeto1
 from projetos.t2.main import projeto2
 from projetos.t3.main import projeto3
 from projetos.t4.main import projeto4
+from projetos.t5.main import projeto5
 
-projeto4()
+projeto5()
